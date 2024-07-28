@@ -12,9 +12,8 @@ if ($conn->connect_error) {
 $error_message = "";
 $success_message = "";
 
-
 function generateUmfrageCode($passwordLength) {
-    $validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890?!$";
+    $validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     $maximalLength = $passwordLength;
     $result = "";
     
@@ -25,6 +24,9 @@ function generateUmfrageCode($passwordLength) {
     
     return $result;
 }
+
+$code = generateUmfrageCode(16);
+$teilnahmeLink = "terminumfrage.php?code=" . $code;
 
 // Wenn das Formular abgesendet wurde
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -40,11 +42,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (empty($termine)) {
         $error_message = "Bitte geben Sie mindestens einen möglichen Termin ein.";
     } else {
-        $code = generateUmfrageCode(16); // Call the function to generate the code
         // SQL-Abfrage zum Einfügen der Terminumfrage
-        $sql = "INSERT INTO Terminumfrage (Code, Titel, Beschreibung) VALUES (?, ?, ?)"; // Include Code in the query        
+        $sql = "INSERT INTO Terminumfrage (Code, Titel, Beschreibung) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sss", $code,$titel, $beschreibung);
+        $stmt->bind_param("sss", $code, $titel, $beschreibung);
         
         if ($stmt->execute()) {
             $terminumfrage_id = $stmt->insert_id;
@@ -62,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             
             $stmt_termin->close();
-            $success_message = "Neue Terminumfrage erfolgreich erstellt.";
+            $success_message = "Neue Terminumfrage erfolgreich erstellt. <a href='$teilnahmeLink' class='text-blue-600 hover:underline'>Hier geht's zur Abstimmung...</a>";
         } else {
             $error_message = "Fehler beim Erstellen der Terminumfrage: " . $conn->error;
         }
@@ -89,7 +90,6 @@ $conn->close();
             newField.className = "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50";
             container.appendChild(newField);
         }
-
     </script>
 </head>
 <body class="h-full">
@@ -97,6 +97,7 @@ $conn->close();
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <h1 class="text-3xl font-bold text-gray-900">Neue Terminumfrage erstellen</h1>
+                <p class="mb-4">Teilnahmelink: <a href="<?php echo $teilnahmeLink; ?>" class="text-blue-600 hover:underline"><?php echo $teilnahmeLink; ?></a></p>
             </div>
         </header>
         <main>
