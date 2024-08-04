@@ -1,6 +1,5 @@
 <?php
 session_start(); // Session starten
-require_once 'config.php';
 require_once 'database.php';
 require_once 'helpers/umfrage_helpers.php';
 require_once 'helpers/termin_helpers.php';

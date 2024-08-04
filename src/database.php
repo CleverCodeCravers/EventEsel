@@ -2,9 +2,9 @@
 require_once 'config.php';
 
 function getDatabaseConnection() {
-    global $servername, $username, $password, $dbname;
+    global $DBSERVER, $DBUSER, $DBPASSWORD, $DBNAME;
     try {
-        $conn = new mysqli($servername, $username, $password, $dbname);
+        $conn = new mysqli($DBSERVER, $DBUSER, $DBPASSWORD, $DBNAME);
         if ($conn->connect_error) {
             throw new Exception("Verbindung fehlgeschlagen: " . $conn->connect_error);
         }

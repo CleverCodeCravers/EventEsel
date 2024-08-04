@@ -1,5 +1,4 @@
 <?php
-require_once 'config.php';
 require_once 'database.php';
 require_once 'helpers/messages.php';
 require_once 'operations/terminumfrage_operations.php';
