@@ -63,8 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
 
             setSuccessMessage($success_message, "Ihre Antwort wurde erfolgreich gespeichert. Vielen Dank für Ihre Teilnahme!");
             
-            // Redirect nach erfolgreichem Absenden
-            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . "?code=" . $code);
+            // Redirect nach erfolgreichem Absenden mit URL-Parameter
+            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . "?code=" . $code . "&saved=1");
             exit();
         } else {
             setErrorMessage($error_message, "Fehler beim Speichern Ihrer Antwort. Bitte versuchen Sie es erneut.");
@@ -100,6 +100,11 @@ $conn->close();
             <?php endif; ?>
             <?php if (!empty($success_message)): ?>
             <p class="text-green-500 mb-4"><?php echo $success_message; ?></p>
+            <?php endif; ?>
+            <?php if (isset($_GET['saved']) && $_GET['saved'] == 1): ?>
+            <div class="bg-green-500 text-white font-bold text-lg text-center p-4 mb-4 rounded">
+              Vielen Dank für deine Abstimmung!
+            </div>
             <?php endif; ?>
 
             <?php if ($umfrage): ?>
