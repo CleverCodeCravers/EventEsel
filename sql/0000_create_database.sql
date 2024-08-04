@@ -33,4 +33,8 @@ CREATE TABLE TerminAntwortMoeglicherTermin (
   IstAktiv BIT NOT NULL DEFAULT 1
 );
 
-
+CREATE TABLE Admin (
+  AdminId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  Username VARCHAR(100) NOT NULL UNIQUE,
+  PasswordHash VARCHAR(255) NOT NULL
+);
