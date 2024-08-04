@@ -108,13 +108,14 @@ $conn->close();
 
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?code=' . $code);?>"
               class="space-y-6">
+
+              <h3 class="text-xl font-bold mb-2">Abstimmung:</h3>
               <div>
-                <label for="teilnehmer" class="block text-sm font-medium text-gray-700">Ihr Name:</label>
+                <label for="teilnehmer" class="block text-sm font-medium text-gray-700">Dein Name:</label>
                 <input type="text" id="teilnehmer" name="teilnehmer" required
                   class="mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
               </div>
 
-              <h3 class="text-xl font-bold mb-2">Abstimmungsergebnisse:</h3>
               <div class="overflow-x-auto">
                 <?php echo renderResultsTable($moegliche_termine, $teilnehmer_antworten); ?>
               </div>
