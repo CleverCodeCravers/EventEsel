@@ -22,7 +22,6 @@ CREATE TABLE Textoptionenumfrage (
   IstAbgeschlossen BIT NOT NULL DEFAULT 0
 );
 
-
 CREATE TABLE MoeglicherTermin (
   MoeglicherTerminId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   Terminumfrage INT NOT NULL REFERENCES Terminumfrage (TerminumfrageId),
@@ -48,4 +47,21 @@ CREATE TABLE Admin (
   AdminId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   Username VARCHAR(100) NOT NULL UNIQUE,
   PasswordHash VARCHAR(255) NOT NULL
+);
+
+-- New table for text options
+CREATE TABLE Textoption (
+  TextoptionId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  Textoptionenumfrage INT NOT NULL REFERENCES Textoptionenumfrage (TextoptionenumfrageId),
+  Text VARCHAR(200) NOT NULL,
+  IstAktiv BIT NOT NULL DEFAULT 1
+);
+
+-- New table for text option answers
+CREATE TABLE TextoptionAntwort (
+  TextoptionAntwortId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  Textoption INT NOT NULL REFERENCES Textoption (TextoptionId),
+  Teilnehmer VARCHAR(200) NOT NULL DEFAULT '',
+  ErfasstAmUm DATETIME NOT NULL DEFAULT NOW(),
+  IstAktiv BIT NOT NULL DEFAULT 1
 );

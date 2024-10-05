@@ -146,7 +146,7 @@ $conn->close();
           <h1 class="text-white text-2xl font-bold">Umfragen</h1>
           <ul class="flex space-x-4">
             <li><a href="terminumfrage-edit.php" class="text-white hover:underline">Terminumfrage</a></li>
-            <li><a href="textoptionumfrage.php" class="text-white hover:underline">Textoptionumfrage</a></li>
+            <li><a href="textoptionumfrage-edit.php" class="text-white hover:underline">Textoptionumfrage</a></li>
           </ul>
         </div>
       </nav>
