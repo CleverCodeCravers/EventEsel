@@ -78,13 +78,14 @@ $conn->close();
     var container = document.getElementById("termine-container");
     var wrapper = document.createElement("div");
     wrapper.className = "flex items-center space-x-2 mb-2";
-    
+
     var newField = document.createElement("input");
     newField.type = "date";
     newField.name = "termine[]";
     newField.required = true;
-    newField.className = "block w-1/4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50";
-    
+    newField.className =
+      "block w-1/4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50";
+
     var deleteButton = document.createElement("button");
     deleteButton.type = "button";
     deleteButton.className = "text-red-600 hover:text-red-800";
@@ -92,11 +93,11 @@ $conn->close();
     deleteButton.onclick = function() {
       container.removeChild(wrapper);
     };
-    
+
     wrapper.appendChild(newField);
     wrapper.appendChild(deleteButton);
     container.appendChild(wrapper);
-    
+
     feather.replace();
   }
 
@@ -104,7 +105,7 @@ $conn->close();
     const startDate = document.getElementById('start-date').value;
     const endDate = document.getElementById('end-date').value;
     const selectedDays = Array.from(document.querySelectorAll('input[name="days[]"]:checked')).map(cb => cb.value);
-    
+
     if (!startDate || !endDate || selectedDays.length === 0) {
       alert('Bitte wählen Sie Start- und Enddatum sowie mindestens einen Wochentag aus.');
       return;
@@ -119,7 +120,7 @@ $conn->close();
         const dateString = currentDate.toISOString().split('T')[0];
         const existingFields = document.querySelectorAll('#termine-container input[type="date"]');
         const alreadyExists = Array.from(existingFields).some(field => field.value === dateString);
-        
+
         if (!alreadyExists) {
           addTerminField();
           const newFields = document.querySelectorAll('#termine-container input[type="date"]');
@@ -140,8 +141,17 @@ $conn->close();
 <body class="h-full">
   <div class="min-h-full">
     <header class="bg-white shadow">
+      <nav class="bg-indigo-600 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+          <h1 class="text-white text-2xl font-bold">Umfragen</h1>
+          <ul class="flex space-x-4">
+            <li><a href="terminumfrage-edit.php" class="text-white hover:underline">Terminumfrage</a></li>
+            <li><a href="textoptionumfrage.php" class="text-white hover:underline">Textoptionumfrage</a></li>
+          </ul>
+        </div>
+      </nav>
       <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900">Neue Terminumfrage erstellen</h1>
+        <h2 class="text-3xl font-bold text-gray-900">Neue Terminumfrage erstellen</h2>
         <p class="mb-4">Teilnahmelink: <a href="<?php echo $teilnahmeLink; ?>"
             class="text-blue-600 hover:underline"><?php echo $teilnahmeLink; ?></a></p>
       </div>
@@ -185,7 +195,7 @@ $conn->close();
                   Weiteren Termin hinzufügen
                 </button>
               </div>
-              
+
               <!-- New section for pattern generator -->
               <div class="mt-6">
                 <h3 class="text-lg font-medium text-gray-900">Terminmuster-Generator (optional)</h3>
@@ -224,7 +234,7 @@ $conn->close();
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <button type="submit"
                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

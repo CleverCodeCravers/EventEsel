@@ -12,6 +12,17 @@ CREATE TABLE Terminumfrage (
   IstAbgeschlossen BIT NOT NULL DEFAULT 0
 );
 
+CREATE TABLE Textoptionenumfrage (
+  TextoptionenumfrageId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  Code VARCHAR(200) NOT NULL,
+  Titel VARCHAR(200) NOT NULL,
+  Beschreibung MEDIUMTEXT,
+  IstAktiv BIT NOT NULL DEFAULT 1,
+  ErstelltAmUm DATETIME NOT NULL DEFAULT NOW(),
+  IstAbgeschlossen BIT NOT NULL DEFAULT 0
+);
+
+
 CREATE TABLE MoeglicherTermin (
   MoeglicherTerminId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   Terminumfrage INT NOT NULL REFERENCES Terminumfrage (TerminumfrageId),
