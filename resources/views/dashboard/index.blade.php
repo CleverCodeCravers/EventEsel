@@ -35,7 +35,7 @@
             @foreach($umfragen as $umfrage)
             <tr class="{{ $umfrage['ist_abgeschlossen'] ? 'bg-gray-100 text-gray-400' : '' }}">
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $umfrage['typ'] === 'Terminumfrage' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $umfrage['typ'] === 'Terminumfrage' ? 'bg-blue-100 text-blue-800' : ($umfrage['typ'] === 'Konsensumfrage' ? 'bg-amber-100 text-amber-800' : 'bg-purple-100 text-purple-800') }}">
                         {{ $umfrage['typ'] }}
                     </span>
                 </td>

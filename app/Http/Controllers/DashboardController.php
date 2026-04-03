@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Konsensumfrage;
 use App\Models\Terminumfrage;
 use App\Models\Textoptionenumfrage;
 
@@ -39,7 +40,21 @@ class DashboardController extends Controller
             'route_destroy' => route('textoptionumfrage.destroy', $u->id),
         ]);
 
-        $umfragen = $terminumfragen->concat($textoptionumfragen)->sortByDesc('erstellt_am')->values();
+        $konsensumfragen = Konsensumfrage::latest()->get()->map(fn ($u) => [
+            'id' => $u->id,
+            'typ' => 'Konsensumfrage',
+            'titel' => $u->titel,
+            'code' => $u->code,
+            'erstellt_am' => $u->created_at,
+            'ist_abgeschlossen' => $u->ist_abgeschlossen,
+            'stimmen' => $u->teilnehmer()->where('hat_abgestimmt', true)->count() . '/' . $u->teilnehmer()->where('ist_aktiv', true)->count(),
+            'route_show' => route('konsensumfrage.links', $u->id),
+            'route_edit' => route('konsensumfrage.edit', $u->id),
+            'route_close' => route('konsensumfrage.close', $u->id),
+            'route_destroy' => route('konsensumfrage.destroy', $u->id),
+        ]);
+
+        $umfragen = $terminumfragen->concat($textoptionumfragen)->concat($konsensumfragen)->sortByDesc('erstellt_am')->values();
 
         return view('dashboard.index', compact('umfragen'));
     }
@@ -70,5 +85,19 @@ class DashboardController extends Controller
         $textoptionenumfrage->delete();
 
         return redirect()->route('dashboard')->with('success', 'Textoptionumfrage gelöscht.');
+    }
+
+    public function closeKonsensumfrage(Konsensumfrage $konsensumfrage)
+    {
+        $konsensumfrage->update(['ist_abgeschlossen' => true]);
+
+        return redirect()->route('dashboard')->with('success', 'Konsensumfrage abgeschlossen.');
+    }
+
+    public function destroyKonsensumfrage(Konsensumfrage $konsensumfrage)
+    {
+        $konsensumfrage->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Konsensumfrage gelöscht.');
     }
 }

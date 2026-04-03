@@ -16,6 +16,7 @@
                     <li><a href="{{ route('dashboard') }}" class="text-white hover:underline">Dashboard</a></li>
                     <li><a href="{{ route('terminumfrage.create') }}" class="text-white hover:underline">Terminumfrage</a></li>
                     <li><a href="{{ route('textoptionumfrage.create') }}" class="text-white hover:underline">Textoptionumfrage</a></li>
+                    <li><a href="{{ route('konsensumfrage.create') }}" class="text-white hover:underline">Konsensumfrage</a></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf

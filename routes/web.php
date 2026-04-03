@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KonsensumfrageController;
 use App\Http\Controllers\TerminumfrageController;
 use App\Http\Controllers\TextoptionumfrageController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ Route::post('/terminumfrage/{code}', [TerminumfrageController::class, 'vote'])->
 Route::get('/textoptionumfrage/{code}', [TextoptionumfrageController::class, 'show'])->name('textoptionumfrage.show');
 Route::post('/textoptionumfrage/{code}', [TextoptionumfrageController::class, 'vote'])->name('textoptionumfrage.vote');
 
+// Konsensumfrage - öffentlich (persönlicher Link)
+Route::get('/konsens/{code}/t/{teilnehmerCode}', [KonsensumfrageController::class, 'show'])->name('konsensumfrage.show');
+Route::post('/konsens/{code}/t/{teilnehmerCode}', [KonsensumfrageController::class, 'vote'])->name('konsensumfrage.vote');
+
 // Admin-Bereich (geschützt)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -39,4 +44,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/textoptionumfrage/{textoptionenumfrage}', [TextoptionumfrageController::class, 'update'])->name('textoptionumfrage.update');
     Route::patch('/textoptionumfrage/{textoptionenumfrage}/close', [DashboardController::class, 'closeTextoptionumfrage'])->name('textoptionumfrage.close');
     Route::delete('/textoptionumfrage/{textoptionenumfrage}/delete', [DashboardController::class, 'destroyTextoptionumfrage'])->name('textoptionumfrage.destroy');
+
+    Route::get('/konsensumfrage-erstellen', [KonsensumfrageController::class, 'create'])->name('konsensumfrage.create');
+    Route::post('/konsensumfrage-erstellen', [KonsensumfrageController::class, 'store'])->name('konsensumfrage.store');
+    Route::get('/konsensumfrage/{konsensumfrage}/edit', [KonsensumfrageController::class, 'edit'])->name('konsensumfrage.edit');
+    Route::put('/konsensumfrage/{konsensumfrage}', [KonsensumfrageController::class, 'update'])->name('konsensumfrage.update');
+    Route::get('/konsensumfrage/{konsensumfrage}/links', [KonsensumfrageController::class, 'links'])->name('konsensumfrage.links');
+    Route::patch('/konsensumfrage/{konsensumfrage}/close', [DashboardController::class, 'closeKonsensumfrage'])->name('konsensumfrage.close');
+    Route::delete('/konsensumfrage/{konsensumfrage}/delete', [DashboardController::class, 'destroyKonsensumfrage'])->name('konsensumfrage.destroy');
 });
