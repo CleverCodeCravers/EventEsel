@@ -4,7 +4,7 @@ function generateUmfrageCode($passwordLength) {
     $result = "";
 
     for ($i = 0; $i < $passwordLength; $i++) {
-        $randomNumber = rand(0, strlen($validCharacters) - 1);
+        $randomNumber = random_int(0, strlen($validCharacters) - 1);
         $result .= $validCharacters[$randomNumber];
     }
 

@@ -1,12 +1,27 @@
 <?php
-session_start(); // Start session
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_samesite', 'Strict');
+session_start();
 require_once 'database.php';
 require_once 'helpers/umfrage_helpers.php';
 require_once 'helpers/textoption_helpers.php';
+require_once 'helpers/csrf.php';
+require_once 'helpers/security_headers.php';
+setSecurityHeaders();
 
-// Check if the user is logged in
+// Session-Timeout (30 Minuten)
+$session_timeout = 1800;
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $session_timeout) {
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+$_SESSION['last_activity'] = time();
+
+// Überprüfen, ob der Benutzer angemeldet ist
 if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
-    header("Location: login.php"); // Redirect to login page
+    header("Location: login.php");
     exit();
 }
 
@@ -20,11 +35,14 @@ $teilnahmeLink = "textoptionumfrage.php?code=" . $code;
 
 // If the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!validateCsrfToken()) {
+        $error_message = "Ungültige Anfrage. Bitte laden Sie die Seite neu.";
+    } else {
     $titel = trim($_POST['titel']);
     $beschreibung = trim($_POST['beschreibung']);
     $optionen = isset($_POST['optionen']) ? $_POST['optionen'] : array();
     // Validate input
-    //$error_message = validateTextoptionInput($titel, $beschreibung, $optionen);
+    $error_message = validateTextoptionInput($titel, $beschreibung, $optionen);
     
     if (empty($error_message)) {
         // SQL query to insert the text option survey
@@ -53,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_message = "Fehler beim Erstellen der Textoptionenumfrage: " . $conn->error;
         }
     }
+    }
 }
 
 $conn->close();
@@ -66,7 +85,7 @@ $conn->close();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neue Textoptionumfrage erstellen</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" crossorigin="anonymous"></script>
   <script>
   function addOptionField() {
     var container = document.getElementById("optionen-container");
@@ -125,13 +144,14 @@ $conn->close();
           <div class="border-4 border-dashed border-gray-200 rounded-lg p-4">
             <?php
                         if (!empty($error_message)) {
-                            echo "<p class='text-red-500 mb-4'>$error_message</p>";
+                            echo "<p class='text-red-500 mb-4'>" . htmlspecialchars($error_message, ENT_QUOTES, 'UTF-8') . "</p>";
                         }
                         if (!empty($success_message)) {
-                            echo "<p class='text-green-500 mb-4'>$success_message</p>";
+                            echo "<p class='text-green-500 mb-4'>" . $success_message . "</p>";
                         }
                         ?>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" class="space-y-6">
+              <?php echo csrfField(); ?>
               <div>
                 <label for="titel" class="block text-sm font-medium text-gray-700">Titel:</label>
                 <input type="text" id="titel" name="titel" maxlength="200" required

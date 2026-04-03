@@ -24,9 +24,10 @@ CREATE TABLE Textoptionenumfrage (
 
 CREATE TABLE MoeglicherTermin (
   MoeglicherTerminId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  Terminumfrage INT NOT NULL REFERENCES Terminumfrage (TerminumfrageId),
+  Terminumfrage INT NOT NULL,
   Datum DATETIME,
-  IstAktiv BIT NOT NULL DEFAULT 1
+  IstAktiv BIT NOT NULL DEFAULT 1,
+  FOREIGN KEY (Terminumfrage) REFERENCES Terminumfrage (TerminumfrageId) ON DELETE CASCADE
 );
 
 CREATE TABLE TerminAntwort (
@@ -38,9 +39,11 @@ CREATE TABLE TerminAntwort (
 
 CREATE TABLE TerminAntwortMoeglicherTermin (
   TerminAntwortMoeglicherTerminId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  TerminAntwort INT NOT NULL REFERENCES TerminAntwort (TerminAntwortId),
-  MoeglicherTermin INT NOT NULL REFERENCES MoeglicherTermin (MoeglicherTerminId),
-  IstAktiv BIT NOT NULL DEFAULT 1
+  TerminAntwort INT NOT NULL,
+  MoeglicherTermin INT NOT NULL,
+  IstAktiv BIT NOT NULL DEFAULT 1,
+  FOREIGN KEY (TerminAntwort) REFERENCES TerminAntwort (TerminAntwortId) ON DELETE CASCADE,
+  FOREIGN KEY (MoeglicherTermin) REFERENCES MoeglicherTermin (MoeglicherTerminId) ON DELETE CASCADE
 );
 
 CREATE TABLE Admin (
@@ -52,16 +55,17 @@ CREATE TABLE Admin (
 -- New table for text options
 CREATE TABLE Textoption (
   TextoptionId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  Textoptionenumfrage INT NOT NULL REFERENCES Textoptionenumfrage (TextoptionenumfrageId),
+  Textoptionenumfrage INT NOT NULL,
   Text VARCHAR(200) NOT NULL,
-  IstAktiv BIT NOT NULL DEFAULT 1
+  IstAktiv BIT NOT NULL DEFAULT 1,
+  FOREIGN KEY (Textoptionenumfrage) REFERENCES Textoptionenumfrage (TextoptionenumfrageId) ON DELETE CASCADE
 );
 
--- New table for text option answers
 CREATE TABLE TextoptionAntwort (
   TextoptionAntwortId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  Textoption INT NOT NULL REFERENCES Textoption (TextoptionId),
+  Textoption INT NOT NULL,
   Teilnehmer VARCHAR(200) NOT NULL DEFAULT '',
   ErfasstAmUm DATETIME NOT NULL DEFAULT NOW(),
-  IstAktiv BIT NOT NULL DEFAULT 1
+  IstAktiv BIT NOT NULL DEFAULT 1,
+  FOREIGN KEY (Textoption) REFERENCES Textoption (TextoptionId) ON DELETE CASCADE
 );

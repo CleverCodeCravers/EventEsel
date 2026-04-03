@@ -1,8 +1,12 @@
 <?php
+session_start();
 require_once 'database.php';
 require_once 'helpers/messages.php';
+require_once 'helpers/csrf.php';
+require_once 'helpers/security_headers.php';
 require_once 'operations/textoptionumfrage_operations.php';
 require_once 'render/render_textoption_results.php';
+setSecurityHeaders();
 
 $conn = getDatabaseConnection();
 
@@ -12,12 +16,16 @@ $umfrage = null;
 $textoptionen = [];
 $teilnehmer_antworten = [];
 
+if ($conn === null) {
+    $error_message = "Datenbankverbindung fehlgeschlagen. Bitte versuchen Sie es später erneut.";
+}
+
 // Code aus der URL holen
 $code = isset($_GET['code']) ? $_GET['code'] : '';
 
-if (empty($code)) {
+if (empty($error_message) && empty($code)) {
     setErrorMessage($error_message, "Kein gültiger Code angegeben.");
-} else {
+} elseif (empty($error_message)) {
     $result = loadTextoptionUmfrage($conn, $code);
     if ($result->num_rows > 0) {
         $umfrage = $result->fetch_assoc();
@@ -36,6 +44,9 @@ if (empty($code)) {
 
 // Verarbeitung der Abstimmung
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
+    if (!validateCsrfToken()) {
+        setErrorMessage($error_message, "Ungültige Anfrage. Bitte laden Sie die Seite neu.");
+    } else {
     $teilnehmer = trim($_POST['teilnehmer']);
     $gewaehlte_optionen = isset($_POST['optionen']) ? $_POST['optionen'] : [];
 
@@ -59,15 +70,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit'])) {
             setSuccessMessage($success_message, "Ihre Antwort wurde erfolgreich gespeichert. Vielen Dank für Ihre Teilnahme!");
             
             // Reload the page to show updated results
-            header("Location: " . htmlspecialchars($_SERVER["PHP_SELF"]) . "?code=" . $code . "&saved=1");
+            header("Location: " . $_SERVER["PHP_SELF"] . "?code=" . urlencode($code) . "&saved=1");
             exit();
         } else {
             setErrorMessage($error_message, "Fehler beim Speichern Ihrer Antwort. Bitte versuchen Sie es erneut.");
         }
     }
+    }
 }
 
-$conn->close();
+if ($conn !== null) {
+    $conn->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="de" class="h-full bg-gray-100">
@@ -108,6 +122,7 @@ $conn->close();
 
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . '?code=' . $code);?>"
               class="space-y-6">
+              <?php echo csrfField(); ?>
 
               <h3 class="text-xl font-bold mb-2">Abstimmung:</h3>
               <div>
