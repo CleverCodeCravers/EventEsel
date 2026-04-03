@@ -38,6 +38,45 @@ class TextoptionumfrageController extends Controller
             ->with('teilnahme_link', route('textoptionumfrage.show', $umfrage->code));
     }
 
+    public function edit(Textoptionenumfrage $textoptionenumfrage)
+    {
+        $optionen = $textoptionenumfrage->textoptionen()->where('ist_aktiv', true)->get();
+
+        return view('textoptionumfrage.edit', compact('textoptionenumfrage', 'optionen'));
+    }
+
+    public function update(Request $request, Textoptionenumfrage $textoptionenumfrage)
+    {
+        $request->validate([
+            'titel' => ['required', 'string', 'max:200'],
+            'beschreibung' => ['nullable', 'string', 'max:1000'],
+            'bestehende_optionen' => ['nullable', 'array'],
+            'bestehende_optionen.*' => ['integer', 'exists:textoptionen,id'],
+            'neue_optionen' => ['nullable', 'array'],
+            'neue_optionen.*' => ['nullable', 'string', 'max:200'],
+        ]);
+
+        $textoptionenumfrage->update([
+            'titel' => $request->titel,
+            'beschreibung' => $request->beschreibung,
+        ]);
+
+        // Entfernte Optionen löschen (Cascade löscht Antworten)
+        $bestehendeIds = $request->input('bestehende_optionen', []);
+        $textoptionenumfrage->textoptionen()
+            ->whereNotIn('id', $bestehendeIds)
+            ->delete();
+
+        // Neue Optionen hinzufügen
+        foreach ($request->input('neue_optionen', []) as $text) {
+            if (! empty($text)) {
+                $textoptionenumfrage->textoptionen()->create(['text' => $text]);
+            }
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Textoptionumfrage aktualisiert.');
+    }
+
     public function show(string $code)
     {
         $umfrage = Textoptionenumfrage::where('code', $code)->firstOrFail();

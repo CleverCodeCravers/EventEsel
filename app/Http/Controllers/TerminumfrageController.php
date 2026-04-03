@@ -39,6 +39,45 @@ class TerminumfrageController extends Controller
             ->with('teilnahme_link', route('terminumfrage.show', $umfrage->code));
     }
 
+    public function edit(Terminumfrage $terminumfrage)
+    {
+        $termine = $terminumfrage->moeglicheTermine()->orderBy('datum')->get();
+
+        return view('terminumfrage.edit', compact('terminumfrage', 'termine'));
+    }
+
+    public function update(Request $request, Terminumfrage $terminumfrage)
+    {
+        $request->validate([
+            'titel' => ['required', 'string', 'max:200'],
+            'beschreibung' => ['nullable', 'string', 'max:16777215'],
+            'bestehende_termine' => ['nullable', 'array'],
+            'bestehende_termine.*' => ['integer', 'exists:moegliche_termine,id'],
+            'neue_termine' => ['nullable', 'array'],
+            'neue_termine.*' => ['nullable', 'date'],
+        ]);
+
+        $terminumfrage->update([
+            'titel' => $request->titel,
+            'beschreibung' => $request->beschreibung,
+        ]);
+
+        // Entfernte Termine löschen (Cascade löscht Antworten)
+        $bestehendeIds = $request->input('bestehende_termine', []);
+        $terminumfrage->moeglicheTermine()
+            ->whereNotIn('id', $bestehendeIds)
+            ->delete();
+
+        // Neue Termine hinzufügen
+        foreach ($request->input('neue_termine', []) as $datum) {
+            if (! empty($datum)) {
+                $terminumfrage->moeglicheTermine()->create(['datum' => $datum]);
+            }
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Terminumfrage aktualisiert.');
+    }
+
     public function show(string $code)
     {
         $umfrage = Terminumfrage::where('code', $code)->firstOrFail();

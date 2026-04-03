@@ -28,11 +28,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/terminumfrage-erstellen', [TerminumfrageController::class, 'create'])->name('terminumfrage.create');
     Route::post('/terminumfrage-erstellen', [TerminumfrageController::class, 'store'])->name('terminumfrage.store');
+    Route::get('/terminumfrage/{terminumfrage}/edit', [TerminumfrageController::class, 'edit'])->name('terminumfrage.edit');
+    Route::put('/terminumfrage/{terminumfrage}', [TerminumfrageController::class, 'update'])->name('terminumfrage.update');
     Route::patch('/terminumfrage/{terminumfrage}/close', [DashboardController::class, 'closeTerminumfrage'])->name('terminumfrage.close');
     Route::delete('/terminumfrage/{terminumfrage}/delete', [DashboardController::class, 'destroyTerminumfrage'])->name('terminumfrage.destroy');
 
     Route::get('/textoptionumfrage-erstellen', [TextoptionumfrageController::class, 'create'])->name('textoptionumfrage.create');
     Route::post('/textoptionumfrage-erstellen', [TextoptionumfrageController::class, 'store'])->name('textoptionumfrage.store');
+    Route::get('/textoptionumfrage/{textoptionenumfrage}/edit', [TextoptionumfrageController::class, 'edit'])->name('textoptionumfrage.edit');
+    Route::put('/textoptionumfrage/{textoptionenumfrage}', [TextoptionumfrageController::class, 'update'])->name('textoptionumfrage.update');
     Route::patch('/textoptionumfrage/{textoptionenumfrage}/close', [DashboardController::class, 'closeTextoptionumfrage'])->name('textoptionumfrage.close');
     Route::delete('/textoptionumfrage/{textoptionenumfrage}/delete', [DashboardController::class, 'destroyTextoptionumfrage'])->name('textoptionumfrage.destroy');
 });

@@ -62,6 +62,9 @@
                     </button>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm space-x-2">
+                    <a href="{{ $umfrage['route_edit'] }}" class="text-indigo-600 hover:text-indigo-800 font-medium" title="Bearbeiten">
+                        <svg class="inline w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                    </a>
                     @if(!$umfrage['ist_abgeschlossen'])
                     <form method="POST" action="{{ $umfrage['route_close'] }}" class="inline"
                         onsubmit="return confirm('Möchten Sie diese Umfrage wirklich abschließen?')">
