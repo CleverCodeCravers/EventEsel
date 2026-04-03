@@ -11,8 +11,9 @@
         @auth
         <nav class="bg-indigo-600 p-4">
             <div class="max-w-7xl mx-auto flex justify-between items-center">
-                <a href="{{ route('terminumfrage.create') }}" class="text-white text-2xl font-bold">EventEsel</a>
+                <a href="{{ route('dashboard') }}" class="text-white text-2xl font-bold">EventEsel</a>
                 <ul class="flex space-x-4 items-center">
+                    <li><a href="{{ route('dashboard') }}" class="text-white hover:underline">Dashboard</a></li>
                     <li><a href="{{ route('terminumfrage.create') }}" class="text-white hover:underline">Terminumfrage</a></li>
                     <li><a href="{{ route('textoptionumfrage.create') }}" class="text-white hover:underline">Textoptionumfrage</a></li>
                     <li>

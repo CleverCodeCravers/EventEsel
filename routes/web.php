@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TerminumfrageController;
 use App\Http\Controllers\TextoptionumfrageController;
 use Illuminate\Support\Facades\Route;
@@ -23,9 +24,15 @@ Route::post('/textoptionumfrage/{code}', [TextoptionumfrageController::class, 'v
 
 // Admin-Bereich (geschützt)
 Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/terminumfrage-erstellen', [TerminumfrageController::class, 'create'])->name('terminumfrage.create');
     Route::post('/terminumfrage-erstellen', [TerminumfrageController::class, 'store'])->name('terminumfrage.store');
+    Route::patch('/terminumfrage/{terminumfrage}/close', [DashboardController::class, 'closeTerminumfrage'])->name('terminumfrage.close');
+    Route::delete('/terminumfrage/{terminumfrage}/delete', [DashboardController::class, 'destroyTerminumfrage'])->name('terminumfrage.destroy');
 
     Route::get('/textoptionumfrage-erstellen', [TextoptionumfrageController::class, 'create'])->name('textoptionumfrage.create');
     Route::post('/textoptionumfrage-erstellen', [TextoptionumfrageController::class, 'store'])->name('textoptionumfrage.store');
+    Route::patch('/textoptionumfrage/{textoptionenumfrage}/close', [DashboardController::class, 'closeTextoptionumfrage'])->name('textoptionumfrage.close');
+    Route::delete('/textoptionumfrage/{textoptionenumfrage}/delete', [DashboardController::class, 'destroyTextoptionumfrage'])->name('textoptionumfrage.destroy');
 });

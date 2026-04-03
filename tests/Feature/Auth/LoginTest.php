@@ -12,7 +12,7 @@ test('login page is accessible', function () {
 
 test('admin can login with valid credentials', function () {
     $this->post('/login', ['username' => 'admin', 'password' => 'secret'])
-        ->assertRedirect(route('terminumfrage.create'));
+        ->assertRedirect(route('dashboard'));
 
     $this->assertAuthenticated();
 });

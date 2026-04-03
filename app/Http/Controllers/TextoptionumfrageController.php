@@ -57,6 +57,11 @@ class TextoptionumfrageController extends Controller
     {
         $umfrage = Textoptionenumfrage::where('code', $code)->firstOrFail();
 
+        if ($umfrage->ist_abgeschlossen) {
+            return redirect()->route('textoptionumfrage.show', $code)
+                ->withErrors(['umfrage' => 'Diese Umfrage ist abgeschlossen.']);
+        }
+
         $request->validate([
             'teilnehmer' => ['required', 'string', 'max:200'],
             'optionen' => ['nullable', 'array'],

@@ -58,6 +58,11 @@ class TerminumfrageController extends Controller
     {
         $umfrage = Terminumfrage::where('code', $code)->firstOrFail();
 
+        if ($umfrage->ist_abgeschlossen) {
+            return redirect()->route('terminumfrage.show', $code)
+                ->withErrors(['umfrage' => 'Diese Umfrage ist abgeschlossen.']);
+        }
+
         $request->validate([
             'teilnehmer' => ['required', 'string', 'max:200'],
             'termine' => ['nullable', 'array'],
