@@ -53,8 +53,21 @@ class KonsensumfrageController extends Controller
     public function links(Konsensumfrage $konsensumfrage)
     {
         $teilnehmer = $konsensumfrage->teilnehmer()->where('ist_aktiv', true)->get();
+        $optionen = $konsensumfrage->optionen()->where('ist_aktiv', true)->get();
+        $totalTeilnehmer = $teilnehmer->count();
+        $abgestimmt = $teilnehmer->where('hat_abgestimmt', true)->count();
 
-        return view('konsensumfrage.links', compact('konsensumfrage', 'teilnehmer'));
+        $ergebnisse = $optionen->map(function ($option) use ($totalTeilnehmer) {
+            $stimmen = Konsensteilnehmer::where('konsensoption_id', $option->id)
+                ->where('hat_abgestimmt', true)->count();
+            return [
+                'text' => $option->text,
+                'stimmen' => $stimmen,
+                'prozent' => $totalTeilnehmer > 0 ? round(($stimmen / $totalTeilnehmer) * 100) : 0,
+            ];
+        });
+
+        return view('konsensumfrage.links', compact('konsensumfrage', 'teilnehmer', 'ergebnisse', 'totalTeilnehmer', 'abgestimmt'));
     }
 
     public function show(string $code, string $teilnehmerCode)
