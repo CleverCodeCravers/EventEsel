@@ -28,7 +28,7 @@
             <div id="termine-container" class="space-y-2">
                 <div class="flex items-center space-x-2 mb-2">
                     <input type="date" name="termine[]" required
-                        class="block w-1/4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        class="block w-full sm:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <button type="button" class="text-red-600 hover:text-red-800" onclick="this.parentElement.remove()">&#10005;</button>
                 </div>
             </div>
@@ -84,7 +84,7 @@ function addTerminField() {
     const wrapper = document.createElement("div");
     wrapper.className = "flex items-center space-x-2 mb-2";
     wrapper.innerHTML = `
-        <input type="date" name="termine[]" required class="block w-1/4 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+        <input type="date" name="termine[]" required class="block w-full sm:w-1/3 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
         <button type="button" class="text-red-600 hover:text-red-800" onclick="this.parentElement.remove()">&#10005;</button>
     `;
     container.appendChild(wrapper);

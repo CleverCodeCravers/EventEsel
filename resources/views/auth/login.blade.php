@@ -4,8 +4,8 @@
 @section('heading', 'Admin Login')
 
 @section('content')
-<div class="flex items-center justify-center">
-    <div class="bg-white p-6 rounded shadow-md w-96">
+<div class="flex items-center justify-center px-4">
+    <div class="bg-white p-6 rounded shadow-md w-full max-w-sm">
         <form method="POST" action="{{ route('login') }}" class="space-y-4">
             @csrf
             <div>

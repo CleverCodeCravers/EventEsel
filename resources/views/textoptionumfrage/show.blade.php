@@ -63,7 +63,7 @@
         <div>
             <label for="teilnehmer" class="block text-sm font-medium text-gray-700">Dein Name:</label>
             <input type="text" id="teilnehmer" name="teilnehmer" required value="{{ old('teilnehmer') }}"
-                class="mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                class="mt-1 block w-full sm:w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
         </div>
         <div>
             <button type="submit"

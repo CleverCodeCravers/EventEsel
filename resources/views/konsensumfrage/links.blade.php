@@ -37,22 +37,26 @@
 
     <div class="space-y-3">
         @foreach($teilnehmer as $t)
-        <div class="flex items-center space-x-3 p-3 rounded border {{ $t->hat_abgestimmt ? 'bg-green-50 border-green-200' : 'bg-white' }}">
-            <span class="font-medium w-32">{{ $t->name }}</span>
-            @if($t->hat_abgestimmt)
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    hat abgestimmt
-                </span>
-            @else
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">ausstehend</span>
-            @endif
-            <input type="text" readonly value="{{ route('konsensumfrage.show', [$konsensumfrage->code, $t->code]) }}"
-                class="flex-1 text-sm border-gray-300 rounded bg-gray-50">
-            <button type="button" onclick="copyLink(this, '{{ route('konsensumfrage.show', [$konsensumfrage->code, $t->code]) }}')"
-                class="text-gray-500 hover:text-gray-800 px-2" title="Link kopieren">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-            </button>
+        <div class="p-3 rounded border {{ $t->hat_abgestimmt ? 'bg-green-50 border-green-200' : 'bg-white' }}">
+            <div class="flex items-center justify-between mb-2">
+                <span class="font-medium">{{ $t->name }}</span>
+                @if($t->hat_abgestimmt)
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        abgestimmt
+                    </span>
+                @else
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">ausstehend</span>
+                @endif
+            </div>
+            <div class="flex items-center gap-2">
+                <input type="text" readonly value="{{ route('konsensumfrage.show', [$konsensumfrage->code, $t->code]) }}"
+                    class="flex-1 text-xs sm:text-sm border-gray-300 rounded bg-gray-50 min-w-0">
+                <button type="button" onclick="copyLink(this, '{{ route('konsensumfrage.show', [$konsensumfrage->code, $t->code]) }}')"
+                    class="text-gray-500 hover:text-gray-800 shrink-0 px-2" title="Link kopieren">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                </button>
+            </div>
         </div>
         @endforeach
     </div>
