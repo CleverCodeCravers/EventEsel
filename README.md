@@ -1,23 +1,39 @@
 # EventEsel
-Eine einfache Web-Anwendung zur Findung eines gemeinsamen Termins
 
-## Anforderungen für die Zeit-Planungs-Anwendung
+Eine Webanwendung zur Findung eines gemeinsamen Termins und zur Abstimmung ueber Textoptionen.
 
-## Allgemeine Anforderungen
-- Einfache Webanwendung für eine vertrauensvolle Gruppe von Freunden.
-- Minimalistisches, benutzerfreundliches Design.
-- Kleine, MySQL Datenbank zur Datenspeicherung.
-- Integration eines separaten Benachrichtigungssystems über eine API.
+## Features
 
-## Umfragenerstellung und -verwaltung
-- Automatische Erstellung von Terminumfragen alle 2 Monate für die nächsten 2 Monate (Montag, Mittwoch, Freitag).
-- Generierung eines einzigartigen Abstimmungslinks mit Code für jeden Treffenszeitraum.
-- Einfache Abstimmungsfunktion für Termine ohne individuelle Anmeldung, nur über den Abstimmungslink.
-- Übersichtliche Anzeige der Umfrageergebnisse und geplanter Treffen für alle Freunde mit Zugang zum Link.
-- Kommentarfunktion unter jeder Umfrage zur Absprache.
+- **Terminumfrage erstellen** — Admin erstellt Umfrage mit Datumsoptionen
+- **Terminumfrage abstimmen** — Teilnehmer stimmen ueber einen geteilten Link ab
+- **Textoptionumfrage erstellen** — Admin erstellt Umfrage mit Freitextoptionen
+- **Textoptionumfrage abstimmen** — Teilnehmer waehlen bevorzugte Optionen
+- **Ergebnis-Anzeige** — Echtzeit-Uebersicht aller Stimmen
+- **Admin-Login** — Geschuetzter Bereich fuer Umfrageerstellung
 
-- [ ] Schau nochmal, was bei Benutzerfreundlichkeit gemacht werden kann:
-  - [ ] Möglichkeiten zur Eingabekorrektur... 
-  - [ ] Wenn man mit POST an eine Webseite etwas schickt, antwortet die Seite normalerweise mit einem redirect auf ein GET (So verhindert man POST beim Neu-Laden der Seite)
-  - [ ] Design (Datumsfelder viel zu breit, ...)
-- [ ] Gibt es eine Möglicheit einen minimalen Admin-Zugang zum terminumfrage-edit zu machen?!
+## Tech-Stack
+
+Laravel 13 (PHP 8.4) · Blade · Tailwind CSS · SQLite/MySQL · Pest
+
+## Setup
+
+```bash
+# Voraussetzung: Laravel Herd oder PHP 8.2+/Composer
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve
+```
+
+Oeffne http://localhost:8000 — Admin-Login: `admin` / `admin`
+
+## Tests
+
+```bash
+php artisan test          # Alle 30 Tests ausfuehren
+```
+
+## Lizenz
+
+MIT
