@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Konsensumfrage;
+use App\Models\MoeglicherTermin;
 use App\Models\Terminumfrage;
+use App\Models\Textoption;
 use App\Models\Textoptionenumfrage;
 
 class DashboardController extends Controller
@@ -19,7 +21,7 @@ class DashboardController extends Controller
             'code' => $u->code,
             'erstellt_am' => $u->created_at,
             'ist_abgeschlossen' => $u->ist_abgeschlossen,
-            'stimmen' => $u->moeglicheTermine->flatMap->terminAntworten->unique('id')->count(),
+            'stimmen' => $u->moeglicheTermine->flatMap(fn (MoeglicherTermin $t) => $t->terminAntworten)->unique('id')->count(),
             'route_show' => route('terminumfrage.show', $u->code),
             'route_edit' => route('terminumfrage.edit', $u->id),
             'route_close' => route('terminumfrage.close', $u->id),
@@ -33,7 +35,7 @@ class DashboardController extends Controller
             'code' => $u->code,
             'erstellt_am' => $u->created_at,
             'ist_abgeschlossen' => $u->ist_abgeschlossen,
-            'stimmen' => $u->textoptionen->flatMap->antworten->unique('teilnehmer')->count(),
+            'stimmen' => $u->textoptionen->flatMap(fn (Textoption $o) => $o->antworten)->unique('teilnehmer')->count(),
             'route_show' => route('textoptionumfrage.show', $u->code),
             'route_edit' => route('textoptionumfrage.edit', $u->id),
             'route_close' => route('textoptionumfrage.close', $u->id),

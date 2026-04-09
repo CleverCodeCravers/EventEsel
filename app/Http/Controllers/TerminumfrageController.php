@@ -84,7 +84,9 @@ class TerminumfrageController extends Controller
         $termine = $umfrage->moeglicheTermine()->orderBy('datum')->get();
 
         $antworten = [];
+        /** @var MoeglicherTermin $termin */
         foreach ($termine as $termin) {
+            /** @var TerminAntwort $antwort */
             foreach ($termin->terminAntworten as $antwort) {
                 $antworten[$antwort->teilnehmer][$termin->id] = true;
             }

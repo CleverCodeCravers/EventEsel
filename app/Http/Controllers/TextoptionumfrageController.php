@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Textoption;
 use App\Models\TextoptionAntwort;
 use App\Models\Textoptionenumfrage;
 use Illuminate\Http\Request;
@@ -83,7 +84,9 @@ class TextoptionumfrageController extends Controller
         $optionen = $umfrage->textoptionen()->where('ist_aktiv', true)->get();
 
         $antworten = [];
+        /** @var Textoption $option */
         foreach ($optionen as $option) {
+            /** @var TextoptionAntwort $antwort */
             foreach ($option->antworten()->where('ist_aktiv', true)->get() as $antwort) {
                 $antworten[$antwort->teilnehmer][] = $option->id;
             }

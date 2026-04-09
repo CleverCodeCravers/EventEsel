@@ -13,7 +13,7 @@ Eine Webanwendung zur Findung eines gemeinsamen Termins und zur Abstimmung ueber
 
 ## Tech-Stack
 
-Laravel 13 (PHP 8.4) · Blade · Tailwind CSS · SQLite/MySQL · Pest
+Laravel 13 (PHP 8.4) · Blade · Tailwind CSS · MariaDB · Pest · PHPStan/Larastan
 
 ## Setup
 
@@ -31,7 +31,7 @@ Oeffne http://localhost:8000 — Admin-Login: `admin` / `admin`
 ## Tests
 
 ```bash
-php artisan test          # Alle 30 Tests ausfuehren
+php artisan test          # Alle 82 Tests ausfuehren
 ```
 
 ## Lizenz

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Konsensoption;
 use App\Models\Konsensumfrage;
 use App\Models\Konsensteilnehmer;
 use Illuminate\Http\Request;
@@ -57,7 +58,7 @@ class KonsensumfrageController extends Controller
         $totalTeilnehmer = $teilnehmer->count();
         $abgestimmt = $teilnehmer->where('hat_abgestimmt', true)->count();
 
-        $ergebnisse = $optionen->map(function ($option) use ($totalTeilnehmer) {
+        $ergebnisse = $optionen->map(function (Konsensoption $option) use ($totalTeilnehmer) {
             $stimmen = Konsensteilnehmer::where('konsensoption_id', $option->id)
                 ->where('hat_abgestimmt', true)->count();
             return [
@@ -83,7 +84,7 @@ class KonsensumfrageController extends Controller
         $abgestimmt = $umfrage->teilnehmer()->where('ist_aktiv', true)->where('hat_abgestimmt', true)->count();
 
         // Stimmen pro Option zählen
-        $ergebnisse = $optionen->map(function ($option) use ($totalTeilnehmer) {
+        $ergebnisse = $optionen->map(function (Konsensoption $option) use ($totalTeilnehmer) {
             $stimmen = Konsensteilnehmer::where('konsensoption_id', $option->id)
                 ->where('hat_abgestimmt', true)
                 ->count();

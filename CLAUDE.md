@@ -6,8 +6,8 @@ Webanwendung zur Terminabstimmung und Textoptionsumfragen fuer Freundesgruppen.
 
 - **Backend:** Laravel 13.x (PHP 8.4)
 - **Frontend:** Blade-Templates + Tailwind CSS (via CDN)
-- **Datenbank:** SQLite (Entwicklung), MySQL (Produktion)
-- **Tests:** Pest (PHPUnit)
+- **Datenbank:** MariaDB
+- **Tests:** Pest (PHPUnit), PHPStan/Larastan (Level 4)
 - **Dev-Umgebung:** Laravel Herd (Windows)
 
 ## Lokale Entwicklung
@@ -38,7 +38,7 @@ resources/views/      # Blade-Templates
 database/migrations/  # Datenbank-Schema
 tests/Feature/        # Feature-Tests (HTTP, Auth)
 tests/Unit/           # Unit-Tests (Models)
-Anforderungen/        # Projektanforderungen (R00001-R00008)
+Anforderungen/        # Projektanforderungen (R00001-R00011)
 ```
 
 ## Konventionen
